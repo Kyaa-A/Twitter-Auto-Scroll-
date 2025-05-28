@@ -1,4 +1,6 @@
-> ⭐ **If you find this script useful, please consider giving it a star — it helps a lot!**  
+> ⭐ **If you find this script useful, please consider giving it a star — it helps a lot!**
+> ![GitHub Repo stars](https://img.shields.io/github/stars/Kyaa-A/Twitter-Auto-Scroll-?style=social)
+
 
 # 🌀 Twitter Auto Scroller + Refresher
 
