@@ -50,4 +50,11 @@
         console.log("🔄 Refreshing the page...");
         location.reload();
     }, refreshInterval);
+
+    if (!localStorage.getItem('twitterAutoScrollStarPrompt')) {
+        setTimeout(() => {
+            alert("⭐ Enjoying this script? Please consider giving it a star on GitHub!\n\n👉 https://github.com/Kyaa-A/Twitter-Auto-Scroll-");
+            localStorage.setItem('twitterAutoScrollStarPrompt', 'true');
+        }, 10000); // Show alert after 10 seconds
+    }
 })();
