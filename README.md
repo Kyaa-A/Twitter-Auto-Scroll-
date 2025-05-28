@@ -1,3 +1,5 @@
+> ⭐ **If you find this script useful, please consider giving it a star — it helps a lot!**  
+
 # 🌀 Twitter Auto Scroller + Refresher
 
 A Tampermonkey userscript that **automatically scrolls your Twitter (X) timeline** and **refreshes the page every 5 minutes** — perfect for passive browsing or keeping your feed fresh.
@@ -43,5 +45,5 @@ const scrollDelay = 3000; // Time between scrolls (in ms)
 const scrollDistance = 500; // Pixels per scroll
 const refreshInterval = 5 * 60 * 1000; // Time until page refresh (in ms)
 
-> ⭐ **If you find this script useful, please consider giving it a star — it helps a lot!**  
+
 
