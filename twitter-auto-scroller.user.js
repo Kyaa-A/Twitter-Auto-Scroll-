@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Twitter Auto Scroller + Refresher
+// @name         Twitter Auto Scroller + Refresher with UI
 // @namespace    http://tampermonkey.net/
-// @version      1.3
-// @description  Automatically scrolls Twitter feed and refreshes every 5 minutes
+// @version      1.4
+// @description  Auto-scrolls Twitter feed, refreshes every 5 minutes, and shows a floating UI
 // @author       Kyaa-A
 // @match        https://x.com/*
 // @match        https://twitter.com/*
@@ -14,47 +14,81 @@
 (function () {
     'use strict';
 
-    // Configurations
-    const scrollDelay = 3000; // milliseconds between scrolls
-    const scrollDistance = 500; // pixels per scroll
-    const refreshInterval = 5 * 60 * 1000; // 5 minutes in milliseconds
+    const scrollDelay = 3000;
+    const scrollDistance = 500;
+    const refreshInterval = 5 * 60 * 1000;
 
     let autoScrollEnabled = true;
+    let scrollCount = 0;
+    const startTime = Date.now();
 
-    function scrollPage() {
-        if (!autoScrollEnabled) return;
+    // Create floating UI
+    const ui = document.createElement('div');
+    ui.style.position = 'fixed';
+    ui.style.top = '20px';
+    ui.style.left = '20px';
+    ui.style.zIndex = 9999;
+    ui.style.background = 'rgba(0,128,0,0.9)';
+    ui.style.color = 'white';
+    ui.style.padding = '10px';
+    ui.style.borderRadius = '10px';
+    ui.style.fontFamily = 'monospace';
+    ui.style.fontSize = '14px';
+    ui.style.boxShadow = '0 0 5px rgba(0,0,0,0.3)';
+    ui.style.userSelect = 'none';
+    ui.style.cursor = 'pointer';
 
-        window.scrollBy({
-            top: scrollDistance,
-            left: 0,
-            behavior: 'smooth'
-        });
+    function updateUI() {
+        const runtime = Math.floor((Date.now() - startTime) / 1000);
+        ui.innerHTML = `
+            <strong>📜 Auto-scroll:</strong> ${autoScrollEnabled ? 'ON ✅' : 'OFF ❌'}<br>
+            <strong>🔃 Scrolls:</strong> ${scrollCount}<br>
+            <strong>⏱️ Runtime:</strong> ${runtime}s<br>
+            <em>Press 'S' or click to toggle</em>
+        `;
     }
 
-    // Toggle scroll with 'S' key
+    ui.addEventListener('click', () => {
+        autoScrollEnabled = !autoScrollEnabled;
+        updateUI();
+    });
+
+    document.body.appendChild(ui);
+    updateUI();
+
+    // Scroll function
+    function scrollPage() {
+        if (!autoScrollEnabled) return;
+        window.scrollBy({ top: scrollDistance, left: 0, behavior: 'smooth' });
+        scrollCount++;
+        updateUI();
+    }
+
+    // Toggle with 'S' key
     window.addEventListener('keydown', (e) => {
         if (e.key.toLowerCase() === 's') {
             autoScrollEnabled = !autoScrollEnabled;
-            console.log(`Auto-scroll is now ${autoScrollEnabled ? 'ENABLED' : 'DISABLED'}`);
+            updateUI();
         }
     });
 
-    // Start scrolling and refresh timers
+    // Start after initial delay
     setTimeout(() => {
         setInterval(scrollPage, scrollDelay);
         console.log("🚀 Auto-scroll started! Press 'S' to toggle.");
     }, 3000);
 
-    // Auto refresh the page every 5 minutes
+    // Auto-refresh
     setTimeout(() => {
         console.log("🔄 Refreshing the page...");
         location.reload();
     }, refreshInterval);
 
+    // Prompt for GitHub star
     if (!localStorage.getItem('twitterAutoScrollStarPrompt')) {
         setTimeout(() => {
             alert("⭐ Enjoying this script? Please consider giving it a star on GitHub!\n\n👉 https://github.com/Kyaa-A/Twitter-Auto-Scroll-");
             localStorage.setItem('twitterAutoScrollStarPrompt', 'true');
-        }, 10000); // Show alert after 10 seconds
+        }, 10000);
     }
 })();
