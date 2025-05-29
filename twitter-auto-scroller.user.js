@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Twitter Auto Scroller + Refresher + UI
 // @namespace    http://tampermonkey.net/
-// @version      1.4
+// @version      1.5
 // @description  Automatically scrolls Twitter feed with a floating status UI and refreshes every 5 minutes
 // @author       Kyaa-A
 // @match        https://x.com/*
@@ -14,7 +14,6 @@
 (function () {
     'use strict';
 
-    // Configurations
     const scrollDelay = 3000;
     const scrollDistance = 500;
     const refreshInterval = 5 * 60 * 1000;
@@ -22,16 +21,12 @@
     let autoScrollEnabled = true;
     let scrollCount = 0;
     const startTime = Date.now();
+    let ui;
 
     function scrollPage() {
         if (!autoScrollEnabled) return;
 
-        window.scrollBy({
-            top: scrollDistance,
-            left: 0,
-            behavior: 'smooth'
-        });
-
+        window.scrollBy({ top: scrollDistance, left: 0, behavior: 'smooth' });
         scrollCount++;
         updateUI();
     }
@@ -40,7 +35,6 @@
         if (e.key.toLowerCase() === 's') {
             autoScrollEnabled = !autoScrollEnabled;
             updateUI();
-            console.log(`Auto-scroll is now ${autoScrollEnabled ? 'ENABLED' : 'DISABLED'}`);
         }
     });
 
@@ -61,43 +55,33 @@
         }, 10000);
     }
 
-    // UI
-    let ui;
     function createUI() {
+        if (ui) return;
+
         ui = document.createElement('div');
-        ui.className = 'twitter-autoscroll-ui';
-        ui.style.position = 'fixed';
-        ui.style.top = '20px';
-        ui.style.right = '20px';
-        ui.style.zIndex = '9999';
-        ui.style.background = '#1abc9c';
-        ui.style.color = '#fff';
-        ui.style.padding = '12px 16px';
-        ui.style.borderRadius = '12px';
-        ui.style.fontFamily = '"Segoe UI", Roboto, sans-serif';
-        ui.style.fontSize = '14px';
-        ui.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
-        ui.style.userSelect = 'none';
-        ui.style.cursor = 'pointer';
-        ui.style.transition = 'transform 0.2s ease';
-        ui.style.maxWidth = '250px';
-        ui.style.minWidth = '200px';
-
-        const css = document.createElement('style');
-        css.innerHTML = `
-            .twitter-autoscroll-ui {
-                right: 20px !important;
-                left: unset !important;
-            }
+        ui.id = 'twitter-autoscroll-ui';
+        ui.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: #1abc9c;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-family: "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            user-select: none;
+            cursor: pointer;
+            max-width: 250px;
+            min-width: 200px;
+            line-height: 1.4;
+            transition: transform 0.2s ease;
         `;
-        document.head.appendChild(css);
 
-        ui.addEventListener('mouseenter', () => {
-            ui.style.transform = 'scale(1.03)';
-        });
-        ui.addEventListener('mouseleave', () => {
-            ui.style.transform = 'scale(1)';
-        });
+        ui.addEventListener('mouseenter', () => ui.style.transform = 'scale(1.03)');
+        ui.addEventListener('mouseleave', () => ui.style.transform = 'scale(1)');
         ui.addEventListener('click', () => {
             autoScrollEnabled = !autoScrollEnabled;
             updateUI();
@@ -108,6 +92,7 @@
     }
 
     function updateUI() {
+        if (!ui) return;
         const runtime = Math.floor((Date.now() - startTime) / 1000);
         ui.innerHTML = `
             <div style="font-weight: bold; margin-bottom: 6px;">🌀 <b>Twitter Scroll @Kyaa-A</b></div>
@@ -118,5 +103,11 @@
         `;
     }
 
-    window.addEventListener('DOMContentLoaded', createUI);
+    // Wait until DOM is ready and body exists
+    const waitForBody = setInterval(() => {
+        if (document.body) {
+            clearInterval(waitForBody);
+            createUI();
+        }
+    }, 100);
 })();
