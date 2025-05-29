@@ -2,7 +2,7 @@
 > ![GitHub Repo stars](https://img.shields.io/github/stars/Kyaa-A/Twitter-Auto-Scroll-?style=social)
 
 
-# 🌀 Twitter Auto Scroller + Refresher
+# 🌀 Twitter Auto Scroller with UI
 
 A Tampermonkey userscript that **automatically scrolls your Twitter (X) timeline** and **refreshes the page every 5 minutes** — perfect for passive browsing or keeping your feed fresh.
 

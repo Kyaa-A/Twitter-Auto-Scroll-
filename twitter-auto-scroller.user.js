@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Twitter Auto Scroller + Refresher with UI
+// @name         Twitter Auto Scroller with UI
 // @namespace    http://tampermonkey.net/
 // @version      1.4
 // @description  Auto-scrolls Twitter feed, refreshes every 5 minutes, and shows a floating UI
