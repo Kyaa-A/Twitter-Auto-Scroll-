@@ -116,7 +116,7 @@
     function updateUI() {
         const runtime = Math.floor((Date.now() - startTime) / 1000);
         ui.innerHTML = `
-            <div style="font-weight: bold; margin-bottom: 6px;">🌀 <b>Twitter AutoScroll</b></div>
+            <div style="font-weight: bold; margin-bottom: 6px;">🌀 <b>Twitter Scroll @Kyaa-A</b></div>
             <div>✅ <strong>Auto-scroll:</strong> ${autoScrollEnabled ? '<span style="color:#cfff95">ON ✅</span>' : '<span style="color:#ffcccb">OFF ❌</span>'}</div>
             <div>📜 <strong>Scrolls:</strong> ${scrollCount}</div>
             <div>⏱️ <strong>Runtime:</strong> ${runtime}s</div>
