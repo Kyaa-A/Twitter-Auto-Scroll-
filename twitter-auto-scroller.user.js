@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.4
 // @description  Automatically scrolls Twitter feed with a floating status UI and refreshes every 5 minutes
-// @author       Kyaa-A (Modified by ChatGPT)
+// @author       Kyaa-A
 // @match        https://x.com/*
 // @match        https://twitter.com/*
 // @updateURL    https://raw.githubusercontent.com/Kyaa-A/Twitter-Auto-Scroll-/main/twitter-auto-scroller.user.js
