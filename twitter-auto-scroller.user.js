@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Twitter Auto Scroller with UI
+// @name         Twitter Auto Scroller + Refresher + UI
 // @namespace    http://tampermonkey.net/
 // @version      1.4
 // @description  Automatically scrolls Twitter feed with a floating status UI and refreshes every 5 minutes
@@ -15,9 +15,9 @@
     'use strict';
 
     // Configurations
-    const scrollDelay = 3000; // milliseconds between scrolls
-    const scrollDistance = 500; // pixels per scroll
-    const refreshInterval = 5 * 60 * 1000; // 5 minutes in milliseconds
+    const scrollDelay = 3000;
+    const scrollDistance = 500;
+    const refreshInterval = 5 * 60 * 1000;
 
     let autoScrollEnabled = true;
     let scrollCount = 0;
@@ -36,7 +36,6 @@
         updateUI();
     }
 
-    // Toggle scroll with 'S' key
     window.addEventListener('keydown', (e) => {
         if (e.key.toLowerCase() === 's') {
             autoScrollEnabled = !autoScrollEnabled;
@@ -45,19 +44,16 @@
         }
     });
 
-    // Auto-scroll start
     setTimeout(() => {
         setInterval(scrollPage, scrollDelay);
         console.log("🚀 Auto-scroll started! Press 'S' to toggle.");
     }, 3000);
 
-    // Auto-refresh page
     setTimeout(() => {
         console.log("🔄 Refreshing the page...");
         location.reload();
     }, refreshInterval);
 
-    // Prompt to star GitHub repo
     if (!localStorage.getItem('twitterAutoScrollStarPrompt')) {
         setTimeout(() => {
             alert("⭐ Enjoying this script? Please consider giving it a star on GitHub!\n\n👉 https://github.com/Kyaa-A/Twitter-Auto-Scroll-");
@@ -73,7 +69,6 @@
         ui.style.position = 'fixed';
         ui.style.top = '20px';
         ui.style.right = '20px';
-        ui.style.left = ''; // Clear any default left styles
         ui.style.zIndex = '9999';
         ui.style.background = '#1abc9c';
         ui.style.color = '#fff';
@@ -88,7 +83,6 @@
         ui.style.maxWidth = '250px';
         ui.style.minWidth = '200px';
 
-        // Add CSS override
         const css = document.createElement('style');
         css.innerHTML = `
             .twitter-autoscroll-ui {
@@ -124,6 +118,5 @@
         `;
     }
 
-    // Wait for DOM ready
     window.addEventListener('DOMContentLoaded', createUI);
 })();
