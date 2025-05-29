@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Twitter Auto Scroller with UI
+// @name         Twitter Auto Scroller + Refresher with Stylish UI
 // @namespace    http://tampermonkey.net/
-// @version      1.4
-// @description  Auto-scrolls Twitter feed, refreshes every 5 minutes, and shows a floating UI
+// @version      1.5
+// @description  Auto-scrolls Twitter feed, refreshes every 5 minutes, and shows a stylish floating UI
 // @author       Kyaa-A
 // @match        https://x.com/*
 // @match        https://twitter.com/*
@@ -26,25 +26,34 @@
     const ui = document.createElement('div');
     ui.style.position = 'fixed';
     ui.style.top = '20px';
-    ui.style.left = '20px';
+    ui.style.right = '20px'; // Moved to right side
     ui.style.zIndex = 9999;
-    ui.style.background = 'rgba(0,128,0,0.9)';
-    ui.style.color = 'white';
-    ui.style.padding = '10px';
-    ui.style.borderRadius = '10px';
-    ui.style.fontFamily = 'monospace';
+    ui.style.background = 'linear-gradient(145deg, #00c853, #64dd17)';
+    ui.style.color = '#fff';
+    ui.style.padding = '12px 16px';
+    ui.style.borderRadius = '12px';
+    ui.style.fontFamily = '"Segoe UI", Roboto, sans-serif';
     ui.style.fontSize = '14px';
-    ui.style.boxShadow = '0 0 5px rgba(0,0,0,0.3)';
+    ui.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
     ui.style.userSelect = 'none';
     ui.style.cursor = 'pointer';
+    ui.style.transition = 'transform 0.2s ease';
+
+    ui.addEventListener('mouseenter', () => {
+        ui.style.transform = 'scale(1.03)';
+    });
+    ui.addEventListener('mouseleave', () => {
+        ui.style.transform = 'scale(1)';
+    });
 
     function updateUI() {
         const runtime = Math.floor((Date.now() - startTime) / 1000);
         ui.innerHTML = `
-            <strong>📜 Auto-scroll:</strong> ${autoScrollEnabled ? 'ON ✅' : 'OFF ❌'}<br>
-            <strong>🔃 Scrolls:</strong> ${scrollCount}<br>
-            <strong>⏱️ Runtime:</strong> ${runtime}s<br>
-            <em>Press 'S' or click to toggle</em>
+            <div style="font-weight: bold; margin-bottom: 6px;">🌀 Twitter AutoScroll</div>
+            <div>📜 <strong>Status:</strong> ${autoScrollEnabled ? '<span style="color:#cfff95">ON</span>' : '<span style="color:#ffcccb">OFF</span>'}</div>
+            <div>🔃 <strong>Scrolls:</strong> ${scrollCount}</div>
+            <div>⏱️ <strong>Runtime:</strong> ${runtime}s</div>
+            <div style="margin-top: 6px; font-size: 12px; opacity: 0.8;">Press 'S' or click to toggle</div>
         `;
     }
 
